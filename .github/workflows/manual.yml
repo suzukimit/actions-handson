@@ -11,4 +11,4 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "${{input.greeting}}"
+      - run: echo "${{ inputs.greeting }} world"
