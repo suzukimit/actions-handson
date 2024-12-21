@@ -11,3 +11,30 @@ jobs:
           LITERAL_NUMBER: ${{ 1234 }}
           LITERAL_STRING: ${{ 'Hello' }}
           LITERAL_OMIT_STRING: World
+  compare-functions:
+    runs-on: ubuntu-latest
+    steps:
+      - run: printenv | grep '_FUNC'
+        env:
+          CONTAINS_FUNC: ${{ contains('Hello World', 'World') }}
+          STARTS_WITH_FUNC: ${{ startsWith('Hello World', 'Hello') }}
+          ENDS_WITH_FUNC: ${{ endsWith('Hello World', 'World') }}
+  generate-functions:
+    runs-on: ubuntu-latest
+    steps:
+      - run: printenv | grep '_FUNC'
+        env:
+          FORMAT_FUNC: ${{ format('{0} {1}', 'Hello', 'World') }}
+          JOIN_FUNC: ${{ join(github.event.*.html_url, ',') }}
+  json-functions:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${CONTEXT}"
+        env:
+          CONTEXT: ${{ toJSON(github) }}
+  hash-functions:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "${HASH}"
+        env:
+          HASH: ${{ hashFiles('.github/workflows/*.yml') }}
