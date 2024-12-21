@@ -1,0 +1,16 @@
+name: Environment variables
+on: push
+env:
+  EXAMPLE: "Defined by workflow level"
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env:
+      BRANCH: main
+      EXAMPLE: "Defined by job level"
+    steps:
+      - run: echo ${BRANCH}
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.BRANCH }}
+      - run: echo ${EXAMPLE}
