@@ -1,0 +1,12 @@
+name: Conditions workflow
+on: push
+jobs:
+  skip-or-run:
+    if: ${{ github.actor == 'octocat' }} # 最初のjobがifでスキップされるとワークフロー実行がskipされてコスト削減できる
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello"
+  hello: # でも結局こっちのjobは実行される。なので各jobで同じようなif文が必要？
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello"
