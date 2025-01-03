@@ -1,0 +1,35 @@
+name: Matrix
+on: push
+jobs:
+  matrix:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - run: echo "${RUNNER_OS}"
+        shell: bash
+  multi-dimention-matrix:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        version: [18, 20]
+      runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.vesion }}
+      - run: echo "${RUNNER_OS}"" && node -version
+  manual-matrix:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            version: 20
+          - os: macos-latest
+            version: 18
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.vesion }}
+      - run: echo "${RUNNER_OS}"" && node -version
