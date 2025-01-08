@@ -1,5 +1,5 @@
 name: Matrix Result
-on: push
+on: workflow_dispatch
 jobs:
   # matrixのどれかが失敗した場合、failureになる
   matrix-failure-job:
