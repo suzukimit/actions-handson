@@ -1,0 +1,46 @@
+name: Matrix Result
+on: push
+jobs:
+  # matrixのどれかが失敗した場合、failureになる
+  matrix-failure-job:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        values: [matrix1, matrix2, matrix3]
+    steps:
+      - name: Simulate success or failure
+        run: |
+          if [ "${{ matrix.values }}" == "matrix2" ]; then
+            echo "Simulating failure for matrix2"
+            exit 1
+          fi
+          echo "Matrix ${{ matrix.values }} succeeded"
+
+  # next-jobが失敗しても、always()なので実行され、successになる
+  success-next-job:
+    needs: matrix-failure-job
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo
+        run: echo "may be success"
+
+  # next-jobが失敗しているので、skippedになる
+  skiped-next-job:
+    needs: matrix-failure-job
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo
+        run: echo "may be skipped"
+
+  last-job:
+    needs: [matrix-failure-job, success-next-job, skiped-next-job]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Aggregate results
+        run: |
+          # Print the results of all jobs
+          echo "${{ toJSON(needs.matrix-failure-job) }}"
+          echo "${{ toJSON(needs.success-next-job) }}"
+          echo "${{ toJSON(needs.skiped-next-job) }}"
