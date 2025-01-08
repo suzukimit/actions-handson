@@ -7,6 +7,7 @@ jobs:
     strategy:
       matrix:
         values: [matrix1, matrix2, matrix3]
+      fail-fast: false
     steps:
       - name: Simulate success or failure
         run: |
