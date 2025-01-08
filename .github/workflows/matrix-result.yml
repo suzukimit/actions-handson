@@ -34,14 +34,13 @@ jobs:
       - name: echo
         run: echo "may be skipped"
 
-  last-job:
+  print-result-job:
     needs: [matrix-failure-job, success-next-job, skiped-next-job]
     if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Aggregate results
         run: |
-          # Print the results of all jobs
           echo "${{ toJSON(needs.matrix-failure-job) }}"
           echo "${{ toJSON(needs.success-next-job) }}"
           echo "${{ toJSON(needs.skiped-next-job) }}"
