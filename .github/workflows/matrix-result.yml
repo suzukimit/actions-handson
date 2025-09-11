@@ -34,6 +34,7 @@ jobs:
       - name: echo
         run: echo "may be skipped"
 
+  # 結果を出力。なお、手動でキャンセルした場合は cancelled になる
   print-result-job:
     needs: [matrix-failure-job, success-next-job, skiped-next-job]
     if: always()
